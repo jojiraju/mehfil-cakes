@@ -4,7 +4,29 @@ import { useEffect, useRef, useState, createElement, useMemo, useCallback } from
 import { gsap } from 'gsap';
 import './TextType.css';
 
-const TextType = ({
+interface TextTypeProps {
+  text: string | string[];
+  as?: React.ElementType;
+  typingSpeed?: number;
+  initialDelay?: number;
+  pauseDuration?: number;
+  deletingSpeed?: number;
+  loop?: boolean;
+  className?: string;
+  showCursor?: boolean;
+  hideCursorWhileTyping?: boolean;
+  cursorCharacter?: string;
+  cursorClassName?: string;
+  cursorBlinkDuration?: number;
+  textColors?: string[];
+  variableSpeed?: { min: number; max: number };
+  onSentenceComplete?: (text: string, index: number) => void;
+  startOnVisible?: boolean;
+  reverseMode?: boolean;
+  [key: string]: any;
+}
+
+const TextType: React.FC<TextTypeProps> = ({
   text,
   as: Component = 'div',
   typingSpeed = 50,
@@ -80,7 +102,7 @@ const TextType = ({
   useEffect(() => {
     if (!isVisible) return;
 
-    let timeout;
+    let timeout: ReturnType<typeof setTimeout>;
     const currentText = textArray[currentTextIndex];
     const processedText = reverseMode ? currentText.split('').reverse().join('') : currentText;
 
